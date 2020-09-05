@@ -1,2 +1,2 @@
 # Mjolnir - GitHub API
-Mjolnir is a github api which can perform bulk updates on all repositories
+Mjolnir is a tool using github api to perform bulk updates on all repositories for a particular username.
