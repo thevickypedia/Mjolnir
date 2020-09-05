@@ -4,6 +4,7 @@ import requests
 
 
 def list_repos():
+    # lists all public repositories within a user profile (does not require github token)
     request = requests.get(f'https://api.github.com/users/{username}/repos')
     response = request.json()
 
@@ -13,6 +14,7 @@ def list_repos():
 
 
 def renamer():
+    # changes author info and committer info (requires github token)
     repo = input('Enter a repository you would like to change the author information:\n')
     new_name = input('Enter the new author name (You can also enter the username):\n')
     new_email = input('Enter the new email address:\n')
@@ -27,12 +29,10 @@ def renamer():
                 export GIT_AUTHOR_EMAIL="{new_email}"
                 '
                 git push --force --tags origin 'refs/heads/*'
+                cd {repo}.git
+                cd ../
+                rm -rf {repo}.git
                 """)
-
-    os.system(f"""cd {repo}.git
-    cd ../
-    rm -rf {repo}.git
-    """)
 
 
 if __name__ == '__main__':
