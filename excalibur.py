@@ -1,16 +1,26 @@
 import os
 
 import requests
+from requests.auth import HTTPBasicAuth
 
 
 def list_repos():
     # lists all public repositories within a user profile (does not require github token)
     request = requests.get(f'https://api.github.com/users/{username}/repos')
     response = request.json()
-
     for i in range(len(response)):
         print(response[i]['name'])
         # print(response[i]['svn_url'])
+
+
+def list_private_repos():
+    password = input('Enter your github password:\n')
+    auth = HTTPBasicAuth(username=username, password=password)
+    request = requests.get(f'https://api.github.com/user/repos', auth=auth)
+    response = request.json()
+    for i in range(len(response)):
+        if response[i]['private']:
+            print(response[i]['name'])
 
 
 def renamer():
