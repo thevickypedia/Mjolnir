@@ -29,11 +29,14 @@ def list_private_repos():
 def renamer():
     # changes author info and committer info (requires github token)
     repo = input('Enter a repository you would like to change the author information:\n')
-    new_name = input('Enter the new author name (You can also enter the username):\n')
+    new_name = username  # input('Enter the new author name (You can also enter the username):\n')
     new_email = input('Enter the new email address:\n')
 
-    logger.info(' Cloning repo locally')
+    logger.info(' Cloning repo locally..')
     os.system(f"git clone --bare https://github.com/{username}/{repo}.git &> /dev/null")
+
+    if not os.path.isdir(f'{repo}.git'):
+        exit(logger.error(f' {repo} - No such repo found.'))
 
     logger.info(' Initiating rename process')
     os.system(f"""cd {repo}.git
@@ -44,7 +47,6 @@ def renamer():
                 export GIT_AUTHOR_EMAIL="{new_email}"
                 '
                 git push --force --tags origin 'refs/heads/*'
-                cd {repo}.git
                 cd ../
                 rm -rf {repo}.git
                 """)
